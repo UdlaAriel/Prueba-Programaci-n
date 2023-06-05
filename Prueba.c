@@ -7,44 +7,56 @@
 
 float promedio_estudiante(int calificaciones[alumnos][progresos])
 {
-    float sumTotal;
-    float promedio;
+    float promedio_individual;
+
+    for (int i = 0; i < alumnos; i++)
+    {
+        float sumTotal = 0;
+
+        for (int j = 0; j < progresos; j++)
+        {
+            sumTotal += calificaciones[i][j];
+        }
+        promedio_individual = sumTotal/3;
+        printf("\nEl PROMEDIO individual del estudiante %d fue: %.2f",i+1, promedio_individual);
+    }
+
+    return promedio_individual;
+}
+
+void promedio_general(float calificaciones[alumnos][progresos])
+{
+    float sumTotal_individual[alumnos] = {0};
+    float promedio_individual[alumnos] = {0};
+    float promedioTOTAL, sumTotal_global;
+
 
     for (int i = 0; i < alumnos; i++)
     {
         for (int j = 0; j < progresos; j++)
         {
-            sumTotal = calificaciones[i][j];
+            sumTotal_individual[i] = calificaciones[i][j];
         }
-        promedio = sumTotal/3;
-        printf("\nEl PROMEDIO individual del estudiante %d fue: %.2f",i+1, promedio);
-    }
-
-    return promedio;
-}
-
-void promedio_general(int calificaciones[alumnos][progresos])
-{
-    float sumTotal;
-    float promedioTOTAL;
-
-    for (int i = 0; i < alumnos; i++)
-    {
-        sumTotal += promedio_estudiante(calificaciones);
+        promedio_individual[i] = sumTotal_individual[i]/3;
+        sumTotal_global = promedio_individual[i];
     }
     
-    promedioTOTAL = sumTotal/23;
+    promedioTOTAL = sumTotal_global/23;
+
     printf("\n\nEl PROMEDIO GENERAL es: %.2f", promedio_general);
 }
 
 void mayor_promedio(int calificaciones[alumnos][progresos])
 {
-    float sumTotal;
-    float promedioTOTAL;
+    float mayorPromedio;
 
     for (int i = 0; i < alumnos; i++)
     {
-        sumTotal += promedio_estudiante(calificaciones);
+        for (int j = 0; j < progresos; j++)
+        {
+            /* code */
+        }
+        
     }
 }
 
