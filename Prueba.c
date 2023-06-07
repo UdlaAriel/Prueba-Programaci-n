@@ -3,9 +3,11 @@
 #include <stdlib.h>
 
 #define alumnos 23
-#define progresos 3
+#define progresos 4
 
-float promedio_estudiante(int calificaciones[alumnos][progresos])
+float promedios_estudiantes[alumnos] = {0};
+
+void promedio_individual(float calificaciones[alumnos][progresos])
 {
     float promedio_individual;
 
@@ -17,73 +19,91 @@ float promedio_estudiante(int calificaciones[alumnos][progresos])
         {
             sumTotal += calificaciones[i][j];
         }
-        promedio_individual = sumTotal/3;
-        printf("\nEl PROMEDIO individual del estudiante %d fue: %.2f",i+1, promedio_individual);
+        promedios_estudiantes[i] = sumTotal/3;
     }
-
-    return promedio_individual;
 }
 
-void promedio_general(float calificaciones[alumnos][progresos])
+float promedio_general()
 {
     float sumTotal_individual[alumnos] = {0};
     float promedio_individual[alumnos] = {0};
-    float promedioTOTAL, sumTotal_global;
+    float promedio;
+    float sumTotal_global;
 
 
     for (int i = 0; i < alumnos; i++)
     {
-        for (int j = 0; j < progresos; j++)
-        {
-            sumTotal_individual[i] = calificaciones[i][j];
-        }
+
+        sumTotal_individual[i] = promedios_estudiantes[i];
+        
         promedio_individual[i] = sumTotal_individual[i]/3;
-        sumTotal_global = promedio_individual[i];
+
+        sumTotal_global += promedio_individual[i];
     }
     
-    promedioTOTAL = sumTotal_global/23;
+    promedio = sumTotal_global/23;
 
-    printf("\n\nEl PROMEDIO GENERAL es: %.2f", promedio_general);
+    return promedio;
 }
 
-void mayor_promedio(int calificaciones[alumnos][progresos])
+void requerimiento_Mayor_Calificacion(float calificaciones[alumnos][progresos])
 {
-    float mayorPromedio;
+    float mayorPromedio = 0;
+    int alumno = 0;
 
     for (int i = 0; i < alumnos; i++)
     {
-        for (int j = 0; j < progresos; j++)
+        if(calificaciones[i][3] > mayorPromedio)
         {
-            /* code */
-        }
-        
+            mayorPromedio = calificaciones[i][3];
+            alumno = i;
+        }      
     }
+    printf("\nEL ESTUDIANTE %d, TIENE EL MAYOR PROMEDIO = %.1f\n", alumno+1, mayorPromedio);
 }
 
 int main()
 {
-    int calificaciones[alumnos][progresos] = {0};
+    float calificaciones[alumnos][progresos] = {0};
+    float promedio;
 
     srand(time(NULL));
 
+    printf("\n\nESTUDIANTE\tNOTA1\tNOTA2\tNOTA3\tPROMEDIO\n");
     /*Asignación de valores randómicos al arreglo calificaciones*/
     for (int i = 0; i < alumnos; i++)
+    {       
+        for (int j = 0; j < 3; j++){
+
+            calificaciones[i][j] = rand() % 11;
+        }
+    }
+
+    promedio_individual(calificaciones);
+
+    for (int i = 0; i < alumnos; i++)
     {
-        printf("Estudiante %d: ", i+1);
+        printf("Estudiante %d:", i+1);
         
         for (int j = 0; j < progresos; j++){
 
-            calificaciones[i][j] = rand() % 11;
-            printf(" %d", calificaciones[i][j]);
+            if (j == 3)
+            {
+                calificaciones[i][j] = promedios_estudiantes[i];
+            }
+            
+            if(calificaciones[i][j] < 10) printf("\t  %.1f ", calificaciones[i][j]);
+            else{
+                printf("\t  %.0f", calificaciones[i][j]);
+            }
         }
-        printf(" \n");
+        printf("\n");
     }
 
-    promedio_estudiante(calificaciones);
+    promedio = promedio_general(calificaciones);
+    printf("\n\nPROMEDIO GENERAL: %.2f", promedio);
 
-    promedio_general(calificaciones);
-
-    mayor_promedio(calificaciones);
+    requerimiento_Mayor_Calificacion(calificaciones);
 
     return 0;
 }
